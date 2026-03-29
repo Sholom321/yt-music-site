@@ -93,7 +93,7 @@ body {
     gap: 40px;
     padding: 40px 0;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
     flex-grow: 1;
 }
 
@@ -104,26 +104,39 @@ body {
 }
 
 .main-content-top h1 {
-    font-size: 3em;
+    font-size: 5em;
     margin-bottom: 15px;
     color: #222;
 }
 
 .main-content-top h2 {
-    font-size: 1.5em;
+    font-size: 2.5em;
     margin-top: 0;
-    color: #555;
+    color: #000000;
 }
 
-.left-section,
+.left-section {
+    flex: 1;
+    min-width: 300px;
+    height: 300px; /* same size as right box */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+     padding: 7px;
+    border-radius: 15px;
+   box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    position: relative;
+}
 .right-section {
     flex: 1;
     min-width: 300px;
     background-color: #fff;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    position: relative;
 }
+
 
 .left-section {
     text-align: center;
@@ -131,16 +144,16 @@ body {
 
 .gif-placeholder {
     width: 100%;
-    max-width: 400px;
+    height: 100%;
+    object-fit: cover;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .right-section p {
     font-size: 1.1em;
     color: #555;
     direction: rtl;
-    text-align: right;
+    text-align:justify;
 }
 
 .beats-button {
@@ -259,6 +272,42 @@ body {
 .ys {
     z-index: 100;
 }
+.right-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.zoom-lens {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border: 3px solid black;
+    border-radius: 50%;
+    overflow: hidden;
+    display: none;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.zoom-content {
+    transform: scale(1);
+    transition: transform 0.1s ease;
+}
+.see-more-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1em;
+    transition: 0.3s;
+}
+
+.see-more-btn:hover {
+    background-color: #0056b3;
+}
 </style>
 </head>
 
@@ -282,13 +331,17 @@ body {
         </section>
 
         <section class="right-section">
-            <p>
-                <b>ברוכים הבאים ל-YT Music!</b>אנו מתמחים ביצירת מקצבים מקצועיים ואיכותיים למקלדות, המתאימים למגוון רחב של סגנונות מוזיקליים.
-                    כל מקצב נוצר בקפידה רבה, תוך שימת דגש על הפרטים הקטנים ביותר, כדי להבטיח לכם חווית נגינה עשירה ומרגשת.
-                    אנו מאמינים שמוזיקה היא שפה אוניברסלית, והמקצבים שלנו נועדו לעזור לכם לבטא את היצירתיות שלכם בצורה הטובה ביותר.
-                    גלו את המקצב המושלם עבורכם והתחילו ליצור מוזיקה שתגע בלבבות.
-            </p>
-        </section>
+    <div class="zoom-content">
+        <p>
+                <span style="color: rgb(43, 122, 232); font-size: 1.5em;"><b>ברוכים הבאים ל-YT Music!</b></span>   אנו מתמחים ביצירת מקצבים מקצועיים ואיכותיים למקלדות, המתאימים למגוון רחב של סגנונות מוזיקליים.<br>
+                    כל מקצב נוצר בקפידה רבה, תוך שימת דגש על הפרטים הקטנים ביותר, כדי להבטיח לכם חווית נגינה עשירה ומרגשת.<br>
+                    אנו מאמינים שמוזיקה היא שפה אוניברסלית, והמקצבים שלנו נועדו לעזור לכם לבטא את היצירתיות שלכם בצורה הטובה ביותר.<br>
+                    גלו את המקצב המושלם עבורכם והתחילו ליצור מוזיקה שתגע בלבבות.<br>
+              </p>
+    </div>
+
+    <div class="zoom-lens" id="lens"></div>
+</section>
     </div>
 
 </main>
@@ -307,7 +360,7 @@ body {
        <div class="media-item"><video controls src="images/index content/1.MP4" poster="images/index content/vid1.png"></video></div>
        <div class="media-item"><video controls src="images/index content/2.mp4" poster="images/index content/vid1.png"></video></div>
     </div>
-
+<a href="videos.html" class="see-more-btn">עוד</a>
 </section>
 
 <footer class="footer" id="pageFooter">
@@ -315,6 +368,7 @@ body {
     <div class="footer-content">
         <h3>Contact Us</h3>
         <p>
+            <b>יוסי טכובר</b><br>
             Email: yossitmusic@gmail.com <br>
             Phone: 058 329 4240 <br>
             <a href="form.html" class="beats-button">צרו קשר</a>
@@ -360,7 +414,36 @@ window.addEventListener('scroll', () => {
         ticking = true;
     }
 });
-</script>
+const box = document.querySelector(".right-section");
+const lens = document.getElementById("lens");
+const content = document.querySelector(".zoom-content");
 
+box.addEventListener("mouseenter", () => {
+    lens.style.display = "block";
+    box.style.cursor = "none";
+});
+
+box.addEventListener("mouseleave", () => {
+    lens.style.display = "none";
+    box.style.cursor = "default";
+
+    // 🔥 RESET TO NORMAL
+    content.style.transform = "scale(1)";
+});
+
+box.addEventListener("mousemove", (e) => {
+    const rect = box.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    lens.style.left = (x - 70) + "px";
+    lens.style.top = (y - 70) + "px";
+
+    // 🔥 ONLY zoom while hovering
+    content.style.transform =
+        `scale(2) translate(${-x / 2 + 70}px, ${-y / 2 + 70}px)`;
+});
+</script>
 </body>
 </html>
